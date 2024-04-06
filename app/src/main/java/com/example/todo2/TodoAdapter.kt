@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TodoAdapter (private val todoList:MutableList<Todo>) : RecyclerView.Adapter<TodoAdapter.ViewHolder> (){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.todo_list_item,parent,false)
         return ViewHolder(view)
@@ -23,8 +23,15 @@ class TodoAdapter (private val todoList:MutableList<Todo>) : RecyclerView.Adapte
             tvTodoTitle.paintFlags = tvTodoTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
     }
-
-    override fun onBindViewHolder(holder: TodoAdapter.ViewHolder, position: Int) {
+    fun addTask(title:String){
+        todoList.add(Todo(title,false))
+        notifyItemInserted(todoList.size-1)
+    }
+    fun deleteDone(){
+        todoList.removeAll { todo -> todo.checked }
+        notifyDataSetChanged()
+    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemsViewModel = todoList[position]
         holder.title.text=itemsViewModel.title
         holder.checked.isChecked=itemsViewModel.checked

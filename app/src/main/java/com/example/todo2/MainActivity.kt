@@ -35,27 +35,17 @@ class MainActivity : AppCompatActivity() {
         val adapter = TodoAdapter(data)
         recyclerView.adapter = adapter
 
-        fun addTask() {
+
+        addTaskBtn.setOnClickListener {
             if (task.text.isNotEmpty()) {
-                data.add(Todo(task.text.toString(), false))
-                adapter.notifyItemInserted(data.size-1)
+                adapter.addTask(task.text.toString())
                 task.text.clear()
             }
         }
 
-        fun deleteDone() {
-//            for (i in data.size-1 downTo 0) {
-//                if (data[i].checked) {
-//                    data.removeAt(i)
-//                    adapter.notifyItemRemoved(i)
-//                }
-//            }
-            data.removeAll { todo -> todo.checked }
-            adapter.notifyDataSetChanged()
+        deleteDoneBtn.setOnClickListener {
+            adapter.deleteDone()
         }
-
-        addTaskBtn.setOnClickListener { addTask() }
-        deleteDoneBtn.setOnClickListener { deleteDone() }
 
 
     }
